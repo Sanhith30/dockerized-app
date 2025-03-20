@@ -1,0 +1,23 @@
+name: CI/CD Pipeline for Dockerized App
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on push to main branch
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "sanhith30" --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t sanhith30/dockerized-app:latest .
+
+      - name: Push Docker Image to Docker Hub
+        run: docker push sanhith30/dockerized-app:latest
